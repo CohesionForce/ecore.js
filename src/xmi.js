@@ -9,6 +9,7 @@ Ecore.XMI = {
 
     dataType: 'xml',
     contentType: 'application/xml',
+    doNotThrowParseErrors: false,
 
     parse: function(model, data) {
         if (!Ecore.sax) throw new Error('Sax is missing.');
@@ -163,8 +164,12 @@ Ecore.XMI = {
                     }
             	}
             } else if (eClass === undefined) {
-            	throw new Error( node.name + " has undefined/invalid eClass.");
-            } //again, eClass may be null
+                if(Ecore.XMI.doNotThrowParseErrors) {
+                    console.log('Error: ' + node.name + " has undefined/invalid eClass.");
+                } else {
+                    throw new Error( node.name + " has undefined/invalid eClass.");
+                }
+             } //again, eClass may be null
         };
 
         parser.onclosetag = function(tagName) {
@@ -213,7 +218,11 @@ Ecore.XMI = {
                         }
                     } else if (resolved === undefined) {
                     	//Note: resolved is null in certain valid situations
-                    	throw new Error("Undefined reference: " + ref);
+                        if(Ecore.XMI.doNotThrowParseErrors) {
+                            console.log("Error: Undefined reference: " + ref);
+                        } else {
+                            throw new Error("Undefined reference: " + ref);
+                        }
                     }
                 });
             }

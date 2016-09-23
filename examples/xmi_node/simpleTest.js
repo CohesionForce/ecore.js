@@ -46,7 +46,6 @@ function processFile(file) {
     console.log("::: XMI Dump of " + file);
     console.log(resource.to(Ecore.XMI, true));
   }
-
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,6 +67,8 @@ for(var argidx = 2; argidx < process.argv.length; argidx++) {
     showXMI = !showXMI;
   } else if (argument === "-catchError") {
     catchError = !catchError;
+  } else if (argument === "-doNotThrow") {
+      Ecore.XMI.doNotThrowParseErrors = true;
   } else {
     var fileName = argument;
     console.log('::: Processing ' + fileName);

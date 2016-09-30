@@ -2664,20 +2664,18 @@ Ecore.XMI = {
                                 } else {
                                     parentObject.get(node.name).add(eObject);
                                 }
-                            } else {
-                                // resolve proxy element from href
-                                var attrs = node.attributes;
-                                var href = attrs ? attrs.href : null;
-                                if (href) {
-                                    toResolve.push({ parent: parentObject, feature: eFeature, value: href });
-                                }
+                            } 
+                            // EReferences may have containment = true but still be given by an href
+                            if (node.attributes.href) {
+                                var href = node.attributes.href;
+                                toResolve.push({ parent: parentObject, feature: eFeature, value: href });
                             }
                         } else {
-                        	// There are multiple rootObjects.
-                        	if(rootObject && (rootObject !== eObject)) {
-                        		// There is already a rootObject that has been processed.
-                        		model.add(rootObject);
-                        		rootObject = eObject;
+                            // There are multiple rootObjects.
+                            if(rootObject && (rootObject !== eObject)) {
+                                // There is already a rootObject that has been processed.
+                                model.add(rootObject);
+                                rootObject = eObject;
                         	}
                         }
                     }
